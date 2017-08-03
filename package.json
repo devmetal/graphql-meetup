@@ -1,0 +1,50 @@
+{
+  "name": "graphql-demo-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon server/index.js",
+    "start": "node server/index.js",
+    "lint": "eslint client/**/*.{js,jsx} server/**/*.{js,jsx}"
+  },
+  "dependencies": {
+    "apollo-client": "^1.9.0-1",
+    "axios": "^0.16.2",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "body-parser": "^1.17.2",
+    "co": "^4.6.0",
+    "css-loader": "^0.28.4",
+    "dotenv": "^4.0.0",
+    "enhanced-resolve": "3.4.1",
+    "express": "^4.15.3",
+    "express-graphql": "^0.6.6",
+    "graphql": "^0.10.3",
+    "graphql-tag": "^2.4.2",
+    "html-webpack-plugin": "^2.29.0",
+    "lodash": "^4.17.4",
+    "material-ui": "next",
+    "material-ui-icons": "^1.0.0-alpha.19",
+    "mongoose": "4.10.8",
+    "prop-types": "^15.5.10",
+    "react": "^15.6.1",
+    "react-apollo": "^1.4.8",
+    "react-dom": "^15.6.1",
+    "redux": "^3.7.2",
+    "rxjs": "^5.4.1",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.3.0",
+    "webpack-dev-middleware": "^1.11.0"
+  },
+  "devDependencies": {
+    "eslint": "3.19.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "nodemon": "^1.11.0"
+  }
+}

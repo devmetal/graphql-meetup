@@ -1,0 +1,21 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "rules": {
+    "no-underscore-dangle": "off",
+    "no-console": "off",
+    "react/prefer-stateless-function": "off",
+    "comma-dangle": ["error",
+      {
+       "objects": "always-multiline",
+       "imports": "always-multiline",
+       "exports": "always-multiline",
+       "arrays": "always-multiline",
+       "functions": "ignore"
+      }
+    ]
+  }
+}
