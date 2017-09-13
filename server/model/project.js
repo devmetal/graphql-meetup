@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const _ = require('lodash');
 
 const { Schema } = mongoose;
 
@@ -42,6 +43,27 @@ ProjectSchema.methods.addEmployees = function addEmployees(...employees) {
 ProjectSchema.methods.addRequirements = function addRequirements(...technologies) {
   this.required.push(...technologies);
   return this.save();
+};
+
+ProjectSchema.methods.coverage = async function coverage() {
+  const ProjectModel = this.model('project');
+  const requirements = await ProjectModel.findRequirements(this._id);
+  const employees = await ProjectModel.findEmployees(this._id);
+
+  const requirementIds = _.map(requirements, '_id');
+  const employeeTechIds = _.chain(employees)
+    .map('stack')
+    .flatten()
+    .uniq()
+    .value();
+
+  const intersection = _.intersectionWith(
+    employeeTechIds,
+    requirementIds,
+    _.isEqual
+  );
+
+  return Math.floor((intersection.length / requirementIds.length) * 100.0);
 };
 
 mongoose.model('project', ProjectSchema);

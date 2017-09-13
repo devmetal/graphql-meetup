@@ -1,7 +1,5 @@
 const graphql = require('graphql');
 const mongoose = require('mongoose');
-const _ = require('lodash');
-const co = require('co');
 const EmployeeType = require('./employee_type');
 const TechnologyType = require('./technology_type');
 
@@ -34,26 +32,8 @@ const ProjectType = new GraphQLObjectType({
     },
     coverage: {
       type: GraphQLInt,
-      resolve({ _id }) {
-        return co(function* coverage() {
-          const requirements = yield ProjectModel.findRequirements(_id);
-          const requirementIds = _.map(requirements, '_id');
-
-          const employees = yield ProjectModel.findEmployees(_id);
-          const stackIds = _.chain(employees)
-            .map('stack')
-            .flatten()
-            .uniq()
-            .value();
-
-          const matched = _.intersectionWith(
-            stackIds,
-            requirementIds,
-            _.isEqual
-          );
-
-          return Math.floor((matched.length / requirementIds.length) * 100.0);
-        });
+      resolve(project) {
+        return project.coverage();
       },
     },
   }),

@@ -6,7 +6,7 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 const style = {
   root: {
     width: '100%',
-    position: 'fixed',
+    position: 'absolute',
     zIndex: 2,
     left: 0,
     top: 0,

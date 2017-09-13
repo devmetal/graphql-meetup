@@ -24,8 +24,8 @@ const EmployeeType = new GraphQLObjectType({
     },
     projects: {
       type: new GraphQLList(require('./project_type')), // eslint-disable-line global-require
-      resolve(parentValue) {
-        return parentValue.getProjects();
+      resolve(employee) {
+        return employee.getProjects();
       },
     },
   }),

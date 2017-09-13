@@ -2,12 +2,11 @@ require('dotenv').load();
 require('./model');
 
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressGraphQL = require('express-graphql');
 const webpack = require('webpack');
 const devMiddleware = require('webpack-dev-middleware');
-
-const mongoose = require('mongoose');
 const schema = require('./schema/schema');
 const seed = require('./seed');
 const webpackConfig = require('../webpack.config');

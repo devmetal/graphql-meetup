@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { graphql } from 'react-apollo';
 
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
@@ -9,8 +8,6 @@ import Typography from 'material-ui/Typography';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 
-import query from './query/dashboard';
-import LoadingBar from './components/LoadingBar';
 import Employees from './Employees';
 import Projects from './Projects';
 import Technologies from './Technologies';
@@ -21,6 +18,7 @@ const style = {
   },
   paper: {
     padding: 16,
+    position: 'relative',
   },
   container: {
     marginTop: 10,
@@ -34,15 +32,10 @@ const styleSheet = createStyleSheet('App', () => style);
 
 class App extends Component {
   render() {
-    const { classes, data } = this.props;
-
-    if (data.loading) {
-      return <LoadingBar show />;
-    }
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
-        <LoadingBar show={data.loading} />
         <AppBar position="static">
           <Toolbar>
             <Typography type="title" color="inherit">
@@ -53,17 +46,17 @@ class App extends Component {
         <Grid className={classes.container} container gutter={24}>
           <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
-              <Technologies technologies={data.technologies} />
+              <Technologies />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
-              <Employees employees={data.employees} />
+              <Employees />
             </Paper>
           </Grid>
           <Grid item xs={12} sm={4}>
             <Paper className={classes.paper}>
-              <Projects projects={data.projects} />
+              <Projects />
             </Paper>
           </Grid>
         </Grid>
@@ -73,10 +66,9 @@ class App extends Component {
 }
 
 App.propTypes = {
-  data: PropTypes.objectOf(PropTypes.any).isRequired,
   classes: PropTypes.objectOf(PropTypes.any).isRequired,
 };
 
 const AppWithStyles = withStyles(styleSheet)(App);
 
-export default graphql(query)(AppWithStyles);
+export default AppWithStyles;

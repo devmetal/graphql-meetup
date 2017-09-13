@@ -2,26 +2,20 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import Typography from 'material-ui/Typography';
-import TechnologyList from './TechnologyList';
-import CloseButton from './CloseButton';
-import query from '../query/employee';
+import TechnologyList from './components/TechnologyList';
+import CloseButton from './components/CloseButton';
+import LoadingBar from './components/LoadingBar';
+import query from './query/employee';
 
 class Employee extends Component {
-  constructor(props) {
-    super(props);
-
-    this.handleDropTechnology = this.handleDropTechnology.bind(this);
-    this.handleRemoveTechnology = this.handleRemoveTechnology.bind(this);
-  }
-
-  handleDropTechnology(event) {
+  handleDropTechnology = (event) => {
     const { data: { employee } } = this.props;
     const dataTransfer = event.dataTransfer.getData('application/json');
     const { techId } = JSON.parse(dataTransfer);
     this.props.onAssignTechnology(techId, employee.id);
   }
 
-  handleRemoveTechnology(techId) {
+  handleRemoveTechnology = (techId) => {
     const { data: { employee } } = this.props;
     this.props.onUnassignTechnology(techId, employee.id);
   }
@@ -33,7 +27,7 @@ class Employee extends Component {
     } = this.props;
 
     if (data.loading) {
-      return null;
+      return <LoadingBar show />;
     }
 
     return (

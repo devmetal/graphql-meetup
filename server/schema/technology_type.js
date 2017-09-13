@@ -15,14 +15,14 @@ const TechnologyType = new GraphQLObjectType({
     logo: { type: GraphQLString },
     usedIn: {
       type: new GraphQLList(require('./project_type')), // eslint-disable-line global-require
-      resolve(parentValue) {
-        return parentValue.getProjects();
+      resolve(technology) {
+        return technology.getProjects();
       },
     },
     usedBy: {
       type: new GraphQLList(require('./employee_type')), // eslint-disable-line global-require
-      resolve(parentValue) {
-        return parentValue.getUsers();
+      resolve(technology) {
+        return technology.getUsers();
       },
     },
   }),

@@ -5,25 +5,16 @@ export default gql`
   projects {
     id,
     name,
-    coverage,
+    inthere {
+      id,
+      name
+    },
     required {
       id,
       name,
       logo
     },
-    inthere {
-      id,
-      name
-    }
-  },
-  employees {
-    id,
-    name
-  },
-  technologies {
-    id,
-    name,
-    logo
+    coverage
   }
 }
 `;

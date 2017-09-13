@@ -10,13 +10,8 @@ import List, {
 } from 'material-ui/List';
 
 class TechnologyList extends Component {
-  constructor(props) {
-    super(props);
-    this.handleDrag = this.handleDrag.bind(this);
-  }
 
-  // eslint-disable-next-line 
-  handleDrag(e, techId) {
+  handleDrag = (e, techId) => {
     const type = 'application/json';
     const data = JSON.stringify({ techId });
     e.dataTransfer.setData(type, data);
@@ -25,8 +20,8 @@ class TechnologyList extends Component {
   render() {
     const {
       technologies = [],
-      assignable,
-      removable,
+      assignable = false,
+      removable = false,
       onRemoveTechnology,
     } = this.props;
 

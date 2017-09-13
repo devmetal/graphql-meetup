@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import List, { ListItem } from 'material-ui/List';
 import Card, { CardContent } from 'material-ui/Card';
 import Avatar from 'material-ui/Avatar';
-import Chip from 'material-ui/Chip';
+import UiChip from 'material-ui/Chip';
 import Typography from 'material-ui/Typography';
 import Divider from 'material-ui/Divider';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
@@ -25,6 +25,30 @@ const style = {
 
 const styleSheet = createStyleSheet('projects', style);
 
+const Chip = withStyles(styleSheet)(
+  ({
+    logo = null,
+    classes,
+    name,
+  }) => (
+    <UiChip
+      className={classes.chip}
+      label={name}
+      avatar={
+        (logo) ? <Avatar src={logo} /> : null
+      }
+    />
+  )
+);
+
+const Chips = withStyles(styleSheet)(
+  ({ list, classes }) => (
+    <div className={classes.chips}>
+      {list.map(item => <Chip key={item.id} {...item} />)}
+    </div>
+  )
+);
+
 const ProjectList = ({ projects = [], classes }) => (
   <List>
     {projects.map(project => (
@@ -35,26 +59,15 @@ const ProjectList = ({ projects = [], classes }) => (
               {project.name}
             </Typography>
             <Divider className={classes.divider} />
-            <div className={classes.chips}>
-              {project.required.map(tech => (
-                <Chip
-                  className={classes.chip}
-                  key={tech.id}
-                  label={tech.name}
-                  avatar={<Avatar src={tech.logo} />}
-                />
-              ))}
-            </div>
+            <Typography type="subheading">
+              Required technologies
+            </Typography>
+            <Chips list={project.required} />
             <Divider className={classes.divider} />
-            <div className={classes.chips}>
-              {project.inthere.map(emp => (
-                <Chip
-                  className={classes.chip}
-                  key={emp.id}
-                  label={emp.name}
-                />
-              ))}
-            </div>
+            <Typography type="subheading">
+              Employees in project
+            </Typography>
+            <Chips list={project.inthere} />
             <Divider className={classes.divider} />
             <Typography type="subheading">
               Coverage <strong>{project.coverage} %</strong>

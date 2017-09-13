@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { graphql } from 'react-apollo';
 import Typography from 'material-ui/Typography';
 import TechnologyList from './components/TechnologyList';
+import LoadingBar from './components/LoadingBar';
+import query from './query/technologies';
 
 class Technologies extends Component {
   render() {
-    const { technologies } = this.props;
+    const { data } = this.props;
+
+    if (data.loading) {
+      return <LoadingBar show />;
+    }
 
     return (
       <div>
@@ -13,8 +20,7 @@ class Technologies extends Component {
           Technologies
         </Typography>
         <TechnologyList
-          technologies={technologies}
-          removable={false}
+          technologies={data.technologies}
           assignable
         />
       </div>
@@ -23,7 +29,9 @@ class Technologies extends Component {
 }
 
 Technologies.propTypes = {
-  technologies: PropTypes.arrayOf(PropTypes.any).isRequired,
+  data: PropTypes.shape({
+    technologies: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
 };
 
-export default Technologies;
+export default graphql(query)(Technologies);

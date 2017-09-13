@@ -1,62 +1,56 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import Employee from './components/Employee';
+import Employee from './Employee';
 import EmployeeList from './components/EmployeeList';
+import LoadingBar from './components/LoadingBar';
 import addMutation from './mutation/addTechToEmployee';
 import removeMutation from './mutation/removeTechFromEmployee';
-import query from './query/dashboard';
+import query from './query/employees';
+import projectsQuery from './query/projects';
 
 class Employees extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      selectedId: null,
-    };
+  state = { selectedId: null };
 
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleClose = this.handleClose.bind(this);
-    this.handleAssignTechnology = this.handleAssignTechnology.bind(this);
-    this.handleUnassignTechnology = this.handleUnassignTechnology.bind(this);
-  }
+  handleSelect = selectedId =>
+    this.setState({ selectedId });
 
-  handleSelect(employeeId) {
-    this.setState({ selectedId: employeeId });
-  }
-
-  handleClose() {
+  handleClose = () =>
     this.setState({ selectedId: null });
-  }
 
-  handleAssignTechnology(techId, empId) {
+  handleAssignTechnology = (techId, empId) => {
     this.props.assign({
       variables: {
         tId: techId,
         eId: empId,
       },
-      refetchQueries: [{ query }],
+      refetchQueries: [{ query: projectsQuery }],
     });
   }
 
-  handleUnassignTechnology(techId, empId) {
+  handleUnassignTechnology = (techId, empId) => {
     this.props.unassign({
       variables: {
         tId: techId,
         eId: empId,
       },
-      refetchQueries: [{ query }],
+      refetchQueries: [{ query: projectsQuery }],
     });
   }
 
   render() {
-    const { employees } = this.props;
+    const { data } = this.props;
     const { selectedId } = this.state;
+
+    if (data.loading) {
+      return <LoadingBar show />;
+    }
 
     return (
       <div>
         {!selectedId && <EmployeeList
-          employees={employees}
+          employees={data.employees}
           onSelectEmployee={this.handleSelect}
           selectable
         />}
@@ -74,10 +68,13 @@ class Employees extends Component {
 Employees.propTypes = {
   assign: PropTypes.func.isRequired,
   unassign: PropTypes.func.isRequired,
-  employees: PropTypes.arrayOf(PropTypes.any).isRequired,
+  data: PropTypes.shape({
+    employees: PropTypes.arrayOf(PropTypes.any),
+  }).isRequired,
 };
 
 export default compose(
+  graphql(query, { name: 'data' }),
   graphql(addMutation, { name: 'assign' }),
   graphql(removeMutation, { name: 'unassign' })
 )(Employees);
