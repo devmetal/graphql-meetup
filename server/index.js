@@ -1,6 +1,7 @@
 require('dotenv').load();
 require('./model');
 
+const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -11,7 +12,7 @@ const schema = require('./schema/schema');
 const seed = require('./seed');
 const webpackConfig = require('../webpack.config');
 
-const { PORT, MONGO_URI } = process.env;
+const { PORT, MONGO_URI, NODE_ENV } = process.env;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI);
@@ -32,7 +33,13 @@ app.use('/graphql', expressGraphQL({
   graphiql: true,
 }));
 
-app.use(devMiddleware(webpack(webpackConfig)));
+if (NODE_ENV !== 'production') {
+  app.use(devMiddleware(webpack(webpackConfig)));
+}
+
+if (NODE_ENV === 'production') {
+  app.use('/', express.static(path.join(__dirname, '..', 'client', 'build')));
+}
 
 app.listen(PORT, () => {
   console.log('App ready on', PORT);

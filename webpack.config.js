@@ -1,9 +1,29 @@
+require('dotenv').load();
+const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const plugins = [
+  new HtmlWebpackPlugin({
+    template: 'client/index.html',
+  })
+];
+
+if (process.env.NODE_ENV === 'production') {
+  plugins.push(
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin()
+  );
+}
 
 module.exports = {
   entry: './client/index.jsx',
   output: {
-    path: '/',
+    path: path.join(__dirname, 'client', 'build'),
     filename: 'bundle.js',
   },
   devtool: 'sourcemap',
@@ -23,9 +43,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: 'client/index.html',
-    }),
-  ],
+  plugins,
 };

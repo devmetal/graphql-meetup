@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon server/index.js",
-    "start": "node server/index.js",
+    "build": "webpack --progress",
+    "start": "NODE_ENV=production npm run build && node server/index.js",
     "lint": "eslint client/**/*.{js,jsx} server/**/*.{js,jsx}"
   },
   "dependencies": {
